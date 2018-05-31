@@ -78,28 +78,13 @@ class ScClient
   end
 
   #
-  # subscribe to a channel
-  #
-  # @param [String] channel Name of channel to be subscribed
-  #
-  #
-  #
-  def channel_subscribe(channel)
-    channel_object = {}
-    channel_object['event'] = '#subscribe'
-    channel_object['channel'] = channel
-    channel_object['cid'] = increment_cnt
-    @ws.send(channel_object.to_json)
-  end
-
-  #
   # Subscribe all the channels available
   #
   #
   #
   #
   def subscribe_channels
-    @channels.each { |channel| channel_subscribe(channel) }
+    @channels.each { |channel| subscribe(channel) }
   end
 
   #
@@ -287,7 +272,7 @@ class ScClient
     subscribeobject['data'] = object
     subscribeobject['cid'] = increment_cnt
     @ws.send(subscribeobject.to_json)
-    @channels << channel
+    @channels << channel unless channels.include?(channel)
   end
 
   #
