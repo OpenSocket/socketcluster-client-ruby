@@ -1,6 +1,7 @@
 require 'websocket-eventmachine-client'
 require 'json'
 
+require_relative './data_models'
 require_relative './socketclusterclient/emitter'
 require_relative './socketclusterclient/parser'
 
@@ -11,6 +12,7 @@ require_relative './socketclusterclient/parser'
 #
 class ScClient
   include Emitter
+  include DataModels
 
   #
   # Initializes instance variables in socketcluster client
@@ -96,13 +98,8 @@ class ScClient
   #
   def ack_block(cid)
     ws = @ws
-
     lambda do |error, data|
-      ack_object = {}
-      ack_object['error'] = error
-      ack_object['data'] = data
-      ack_object['rid'] = cid
-      ws.send(ack_object.to_json)
+      ws.send(get_ack_object(error, data, cid))
     end
   end
 
@@ -122,13 +119,7 @@ class ScClient
 
       @ws.onopen do
         reset_value
-        handshake_object = {}
-        handshake_object['event'] = '#handshake'
-        object = {}
-        object['authToken'] = @auth_token
-        handshake_object['data'] = object
-        handshake_object['cid'] = increment_cnt
-        @ws.send(handshake_object.to_json)
+        @ws.send(get_handshake_object(increment_cnt).to_json)
         @on_connected.call if @on_connected
       end
 
@@ -233,10 +224,7 @@ class ScClient
   #
   #
   def emit(event, object)
-    emit_object = {}
-    emit_object['event'] = event
-    emit_object['data'] = object
-    @ws.send(emit_object.to_json)
+    @ws.send(get_emit_object(event, object).to_json)
   end
 
   #
@@ -249,11 +237,7 @@ class ScClient
   # @return [<type>] <description>
   #
   def emitack(event, object, ack)
-    emit_object = {}
-    emit_object['event'] = event
-    emit_object['data'] = object
-    emit_object['cid'] = increment_cnt
-    @ws.send(emit_object.to_json)
+    @ws.send(get_emit_ack_object(event, object, increment_cnt).to_json)
     @acks[@cnt] = [event, ack]
   end
 
@@ -263,16 +247,10 @@ class ScClient
   # @param [String] channel A channel name
   #
   #
-  #
+  # @return [<Array>] <list of channels subscribed>
   def subscribe(channel)
-    subscribeobject = {}
-    subscribeobject['event'] = '#subscribe'
-    object = {}
-    object['channel'] = channel
-    subscribeobject['data'] = object
-    subscribeobject['cid'] = increment_cnt
-    @ws.send(subscribeobject.to_json)
-    @channels << channel unless channels.include?(channel)
+    @ws.send(get_subscribe_object(channel, increment_cnt))
+    @channels << channel unless @channels.include?(channel)
   end
 
   #
@@ -284,13 +262,7 @@ class ScClient
   #
   #
   def subscribeack(channel, ack)
-    subscribe_object = {}
-    subscribe_object['event'] = '#subscribe'
-    object = {}
-    object['channel'] = channel
-    subscribe_object['data'] = object
-    subscribe_object['cid'] = increment_cnt
-    @ws.send(subscribe_object.to_json)
+    @ws.send(get_subscribe_object(channel, increment_cnt).to_json)
     @channels << channel
     @acks[@cnt] = [channel, ack]
   end
@@ -303,11 +275,7 @@ class ScClient
   #
   #
   def unsubscribe(channel)
-    unsubscribe_object = {}
-    unsubscribe_object['event'] = '#unsubscribe'
-    unsubscribe_object['data'] = channel
-    unsubscribe_object['cid'] = increment_cnt
-    @ws.send(unsubscribe_object.to_json)
+    @ws.send(get_unsubscribe_object(channel, increment_cnt).to_json)
     @channels.delete(channel)
   end
 
@@ -320,11 +288,7 @@ class ScClient
   #
   #
   def unsubscribeack(channel, ack)
-    unsubscribe_object = {}
-    unsubscribe_object['event'] = '#unsubscribe'
-    unsubscribe_object['data'] = channel
-    unsubscribe_object['cid'] = increment_cnt
-    @ws.send(unsubscribe_object.to_json)
+    @ws.send(get_unsubscribe_object(channel, increment_cnt).to_json)
     @channels.delete(channel)
     @acks[@cnt] = [channel, ack]
   end
@@ -338,14 +302,7 @@ class ScClient
   #
   #
   def publish(channel, data)
-    publish_object = {}
-    publish_object['event'] = '#publish'
-    object = {}
-    object['channel'] = channel
-    object['data'] = data
-    publish_object['data'] = object
-    publish_object['cid'] = increment_cnt
-    @ws.send(publish_object.to_json)
+    @ws.send(get_publisher_object(channel, data, increment_cnt).to_json)
   end
 
   #
@@ -358,14 +315,7 @@ class ScClient
   # @return [<type>] <description>
   #
   def publishack(channel, data, ack)
-    publish_object = {}
-    publish_object['event'] = '#publish'
-    object = {}
-    object['channel'] = channel
-    object['data'] = data
-    publish_object['data'] = object
-    publish_object['cid'] = increment_cnt
-    @ws.send(publish_object.to_json)
+    @ws.send(get_publisher_object(channel, data, increment_cnt).to_json)
     @acks[@cnt] = [channel, ack]
   end
 

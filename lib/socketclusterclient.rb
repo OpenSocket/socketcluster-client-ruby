@@ -1,4 +1,4 @@
-require 'sc_client'
+require_relative './sc_client'
 
 #
 # Module SocketclusterClient provides and interface for Socketcluster Client
