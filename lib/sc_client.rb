@@ -1,9 +1,9 @@
 require 'websocket-eventmachine-client'
 require 'json'
 
-require_relative './data_models'
 require_relative './socketclusterclient/emitter'
 require_relative './socketclusterclient/parser'
+require_relative './socketclusterclient/data_models'
 
 #
 # Class ScClient provides an interface to connect to the socketcluster server
