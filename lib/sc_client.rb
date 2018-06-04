@@ -247,9 +247,9 @@ class ScClient
   # @param [String] channel A channel name
   #
   #
-  # @return [<Array>] <list of channels subscribed>
+  #
   def subscribe(channel)
-    @ws.send(get_subscribe_object(channel, increment_cnt))
+    @ws.send(get_subscribe_object(channel, increment_cnt).to_json)
     @channels << channel unless @channels.include?(channel)
   end
 

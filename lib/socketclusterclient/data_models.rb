@@ -11,7 +11,7 @@ module DataModels
   # @param [String] data A data object
   # @param [Integer] cid A remote counter id
   #
-  # @return [Hash] An acknowledgement object
+  # @return An acknowledgement object
   #
   def get_ack_object(error, data, cid)
     OpenStruct.new(
@@ -21,12 +21,12 @@ module DataModels
     ).to_h
   end
 
-  # Returns data model for an emitter event
+  # Returns a data model for an emitter event
   #
   # @param [String] event An emit event
-  # @param [Hash] object The data to be sent
+  # @param [Hash] object A data object
   #
-  # @return [Hash] An emit object
+  # @return An emit object
   #
   def get_emit_object(event, object)
     OpenStruct.new(
@@ -35,13 +35,13 @@ module DataModels
     ).to_h
   end
 
-  # Returns data model for emitter acknowledgment event
+  # Returns a data model for an emitter acknowledgment event
   #
   # @param [String] event An emitter acknowledgment event
-  # @param [Hash] object The data to be sent
-  # @param [Integer] counter A counter
+  # @param [Hash] object A data object
+  # @param [Integer] counter A counter for a particular event
   #
-  # @return [Hash] An emitter acknowledgment object
+  # @return An emitter acknowledgment object
   #
   def get_emit_ack_object(event, object, counter)
     OpenStruct.new(
@@ -51,11 +51,11 @@ module DataModels
     ).to_h
   end
 
-  # Returns data model for handshake event
+  # Returns a data model for a handshake event
   #
-  # @param [Integer] counter A counter for event
+  # @param [Integer] counter A counter for a particular event
   #
-  # @return [Hash] A handshake object
+  # @return A handshake object
   #
   def get_handshake_object(counter)
     OpenStruct.new(
@@ -67,13 +67,13 @@ module DataModels
     ).to_h
   end
 
-  # Returns data model for publish and publish with acknowledgment event
+  # Returns a data model for publish and publish with acknowledgment event
   #
-  # @param [String] channel A channel where data should be published
-  # @param [String] data The data to be published
-  # @param [Integer] counter A counter for event
+  # @param [String] channel A channel for publishing data
+  # @param [String] data A data object
+  # @param [Integer] counter A counter for a particular event
   #
-  # @return [Hash] A publisher object
+  # @return A publisher object
   #
   def get_publisher_object(channel, data, counter)
     OpenStruct.new(
@@ -86,12 +86,12 @@ module DataModels
     ).to_h
   end
 
-  # Returns data model for subscribe and subscribe with acknowledgment event
+  # Returns a data model for subscribe and subscribe with acknowledgment event
   #
   # @param [String] channel A channel to subscribe
-  # @param [Integer] counter A counter for event
+  # @param [Integer] counter A counter for a particular event
   #
-  # @return [Hash] A subscribe object
+  # @return A subscribe object
   #
   def get_subscribe_object(channel, counter)
     OpenStruct.new(
@@ -103,12 +103,12 @@ module DataModels
     ).to_h
   end
 
-  # Returns data model for unsubscribe and unsubscribe with acknowledgment event
+  # Returns a data model for unsubscribe and unsubscribe with acknowledgment event
   #
   # @param [String] channel A channel to unsubscribe
-  # @param [Integer] counter A counter for event
+  # @param [Integer] counter A counter for a particular event
   #
-  # @return [Hash] A unsubscribe object
+  # @return An unsubscribe object
   #
   def get_unsubscribe_object(channel, counter)
     OpenStruct.new(
