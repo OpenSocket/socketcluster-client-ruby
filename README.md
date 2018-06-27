@@ -1,7 +1,7 @@
 # socketcluster-client-ruby
 A Ruby client for socketcluster.io
 
-Refer examples for more details :
+Refer below examples for more details.
 
 Overview
 --------
@@ -15,10 +15,22 @@ This client provides following functionality
 - Can be used for extensive unit-testing of all server side functions
 - Support for ruby >= 2.2.0
 
-To install use
+Installation
+------------
+
+Add this line to your application's Gemfile:
+
 ```ruby
-    gem install socketclusterclient
+gem 'socketclusterclient'
 ```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install socketclusterclient
 
 Description
 -----------
@@ -71,18 +83,18 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
     socket.connect
 ```
 
-- By default reconnection to server is enabled, to configure delay for connection
+- By default reconnection to server is enabled, so to configure delay for connection
 
 ```ruby
-    # This will set automatic-reconnection to server with delay of 2 seconds and repeat it infinitely
+    # This will set automatic-reconnection to socketcluster-server with delay of 2 seconds and repeat it infinitely
     socket.set_delay(2)
     socket.connect
 ```
 
-- To disable reconnection
+- For disabling reconnection to server
 
 ```ruby
-    # To disable reconnection
+    # This will disable reconnection to socketcluster-server
     socket.set_reconnection(false)
 ```
 
@@ -145,15 +157,15 @@ Emitting and listening to events
 Implementing Pub-Sub via channels
 ---------------------------------
 
-#### Creating channel
+#### Creating a channel
 
-- For creating and subscribing to channels:
+- For creating and subscribing to channels
 
 ```ruby
-    # Subscribe to a channel
+    # Subscribe to channel
     socket.subscribe('yell')
 
-    # Subscribe to a channel with acknowledgement
+    # Subscribe to channel with acknowledgement
     socket.subscribeack('yell', ack_subscribe)
 
     ack_subscribe = lambda do |channel, error, _object|
@@ -161,16 +173,16 @@ Implementing Pub-Sub via channels
     end
 ```
 
-- For getting list of created channels :
+- For getting list of created channels
 
 ```ruby
     # Get all subscribed channel
     channels = socket.get_subscribed_channels
 ```
 
-#### Publishing event on channel
+#### Publishing an event on channel
 
-- For publishing event :
+- For publishing an event
 
 ```ruby
     # Publish to a channel
@@ -186,7 +198,7 @@ Implementing Pub-Sub via channels
 
 #### Listening to channel
 
-- For listening to channel event :
+- For listening to a channel event
 
 ```ruby
     # Listen to a channel
@@ -212,3 +224,25 @@ Implementing Pub-Sub via channels
       puts "Unsubscribed to channel => #{channel}" if error == ''
     end
 ```
+
+Usage
+-----
+
+TODO: Write usage instructions here
+
+Development
+-----------
+
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
+Contributing
+------------
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/opensocket/socketcluster-client-ruby. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+License
+-------
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
