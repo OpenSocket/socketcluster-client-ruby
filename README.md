@@ -91,7 +91,7 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
     socket.connect
 ```
 
-- For disabling reconnection to server
+- To disable Automatic Reconnection
 
 ```ruby
     # This will disable reconnection to socketcluster-server
