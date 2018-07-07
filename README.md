@@ -32,7 +32,7 @@ Or install it yourself as:
 
     $ gem install socketclusterclient
 
-Description
+Usage
 -----------
 Create instance of `Socket` class by passing url of socketcluster-server end-point
 
@@ -91,7 +91,7 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
     socket.connect
 ```
 
-- For disabling reconnection to server
+- To disable automatic reconnection to server
 
 ```ruby
     # This will disable reconnection to socketcluster-server
@@ -224,11 +224,6 @@ Implementing Pub-Sub via channels
       puts "Unsubscribed to channel => #{channel}" if error == ''
     end
 ```
-
-Usage
------
-
-TODO: Write usage instructions here
 
 Development
 -----------

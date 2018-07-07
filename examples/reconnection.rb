@@ -18,6 +18,6 @@ end
 socket = ScClient.new('ws://localhost:8000/socketcluster/')
 socket.set_basic_listener(on_connect, on_disconnect, on_connect_error)
 socket.set_authentication_listener(on_set_authentication, on_authentication)
-socket.set_reconnection(true) # default reconnection is true
-socket.set_delay(5) # reconnect in 5 seconds
-socket.connect
+socket.set_reconnection(false) # default reconnection is true
+socket.max_attempts = 5
+socket.reconnect

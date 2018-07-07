@@ -1,9 +1,11 @@
 require 'websocket-eventmachine-client'
 require 'json'
+require 'logger'
 
 require_relative './socketclusterclient/emitter'
 require_relative './socketclusterclient/parser'
 require_relative './socketclusterclient/data_models'
+require_relative './socketclusterclient/reconnect'
 
 #
 # Class ScClient provides an interface to connect to the socketcluster server
@@ -13,6 +15,9 @@ require_relative './socketclusterclient/data_models'
 class ScClient
   include Emitter
   include DataModels
+  include Reconnect
+
+  attr_accessor :reconnect_interval, :max_reconnect_interval, :reconnect_decay, :max_attempts, :attempts_made
 
   #
   # Initializes instance variables in socketcluster client
@@ -28,6 +33,9 @@ class ScClient
     @enable_reconnection = true
     @delay = 3
     initialize_emitter
+    initialize_reconnect
+    @logger = Logger.new(STDOUT)
+    @logger.level = Logger::WARN
   end
 
   #
@@ -339,16 +347,5 @@ class ScClient
   #
   def increment_cnt
     @cnt += 1
-  end
-
-  #
-  # Reconnects to ScServer after delay
-  #
-  #
-  #
-  #
-  def reconnect
-    sleep @delay
-    connect
   end
 end
