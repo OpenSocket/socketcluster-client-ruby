@@ -1,3 +1,5 @@
+require 'socketclusterclient/version'
+
 require_relative './sc_client'
 
 #
@@ -5,5 +7,5 @@ require_relative './sc_client'
 #
 # @author Maanav Shah <shahmaanav07@gmail.com>
 #
-module SocketclusterClient
+module Socketclusterclient
 end
