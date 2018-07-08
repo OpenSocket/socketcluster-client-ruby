@@ -29,7 +29,7 @@ module Reconnect
   #
   #
   def set_reconnection_listener(reconnect_interval, max_reconnect_interval, reconnect_decay, max_attempts)
-    @reconnect_interval = (reconnect_interval > max_reconnect_interval) ? max_reconnect_interval : reconnect_interval
+    @reconnect_interval = reconnect_interval > max_reconnect_interval ? max_reconnect_interval : reconnect_interval
     @max_reconnect_interval = max_reconnect_interval
     @reconnect_decay = reconnect_decay
     @max_attempts = max_attempts

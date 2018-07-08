@@ -73,9 +73,9 @@ module DataModels
   # @param [String] data A data object
   # @param [Integer] counter A counter for a particular event
   #
-  # @return A publisher object
+  # @return A publish object
   #
-  def get_publisher_object(channel, data, counter)
+  def get_publish_object(channel, data, counter)
     OpenStruct.new(
       cid: counter,
       data: OpenStruct.new(

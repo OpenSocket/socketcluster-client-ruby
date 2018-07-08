@@ -18,11 +18,11 @@ RSpec.describe DataModels do
       end
 
       it 'should return an error, data and cid in ack object' do
-        expect(@ack_object.keys.include?(:error)).to be(true)
+        expect(@ack_object.key?(:error)).to be(true)
         expect(@ack_object[:error]).to eq(error)
-        expect(@ack_object.keys.include?(:data)).to be(true)
+        expect(@ack_object.key?(:data)).to be(true)
         expect(@ack_object[:data]).to eq(data)
-        expect(@ack_object.keys.include?(:cid)).to be(true)
+        expect(@ack_object.key?(:cid)).to be(true)
         expect(@ack_object[:cid]).to eq(cid)
       end
     end
@@ -40,9 +40,9 @@ RSpec.describe DataModels do
       end
 
       it 'should return an event and data in emit object' do
-        expect(@emit_object.keys.include?(:event)).to be(true)
+        expect(@emit_object.key?(:event)).to be(true)
         expect(@emit_object[:event]).to eq(event)
-        expect(@emit_object.keys.include?(:data)).to be(true)
+        expect(@emit_object.key?(:data)).to be(true)
         expect(@emit_object[:data]).to eq(data)
       end
     end
@@ -60,13 +60,11 @@ RSpec.describe DataModels do
         expect(@emit_ack_object.class).to eq(Hash)
       end
 
-      it 'should return an event, data and cid in emit ack object' do
-        expect(@emit_ack_object.keys.include?(:event)).to be(true)
+      it 'should return an event and data in emit ack object' do
+        expect(@emit_ack_object.key?(:event)).to be(true)
         expect(@emit_ack_object[:event]).to eq(event)
-        expect(@emit_ack_object.keys.include?(:data)).to be(true)
+        expect(@emit_ack_object.key?(:data)).to be(true)
         expect(@emit_ack_object[:data]).to eq(data)
-        expect(@emit_ack_object.keys.include?(:cid)).to be(true)
-        expect(@emit_ack_object[:cid]).to eq(cid)
       end
     end
 
@@ -82,11 +80,11 @@ RSpec.describe DataModels do
       end
 
       it 'should return an event, data and cid in handshake object' do
-        expect(@handshake_object.keys.include?(:event)).to be(true)
+        expect(@handshake_object.key?(:event)).to be(true)
         expect(@handshake_object[:event]).to eq('#handshake')
-        expect(@handshake_object.keys.include?(:data)).to be(true)
-        expect(@handshake_object[:data].keys.include?(:authToken)).to be(true)
-        expect(@handshake_object.keys.include?(:cid)).to be(true)
+        expect(@handshake_object.key?(:data)).to be(true)
+        expect(@handshake_object[:data].key?(:authToken)).to be(true)
+        expect(@handshake_object.key?(:cid)).to be(true)
         expect(@handshake_object[:cid]).to eq(cid)
       end
     end
@@ -105,12 +103,12 @@ RSpec.describe DataModels do
       end
 
       it 'should return an event, channel, data and cid in publish object' do
-        expect(@publish_object.keys.include?(:event)).to be(true)
+        expect(@publish_object.key?(:event)).to be(true)
         expect(@publish_object[:event]).to eq('#publish')
-        expect(@publish_object.keys.include?(:data)).to be(true)
-        expect(@publish_object[:data].keys.include?(:channel)).to be(true)
+        expect(@publish_object.key?(:data)).to be(true)
+        expect(@publish_object[:data].key?(:channel)).to be(true)
         expect(@publish_object[:data].class).to eq(Hash)
-        expect(@publish_object.keys.include?(:cid)).to be(true)
+        expect(@publish_object.key?(:cid)).to be(true)
         expect(@publish_object[:cid]).to be(cid)
       end
     end
@@ -128,13 +126,13 @@ RSpec.describe DataModels do
       end
 
       it 'should return an event, data, channel and cid in subscribe object' do
-        expect(@subscribe_object.keys.include?(:event)).to be(true)
+        expect(@subscribe_object.key?(:event)).to be(true)
         expect(@subscribe_object[:event]).to eq('#subscribe')
         expect(@subscribe_object[:data].class).to eq(Hash)
-        expect(@subscribe_object.keys.include?(:data)).to be(true)
-        expect(@subscribe_object[:data].keys.include?(:channel)).to be(true)
+        expect(@subscribe_object.key?(:data)).to be(true)
+        expect(@subscribe_object[:data].key?(:channel)).to be(true)
         expect(@subscribe_object[:data][:channel]).to eq(channel)
-        expect(@subscribe_object.keys.include?(:cid)).to be(true)
+        expect(@subscribe_object.key?(:cid)).to be(true)
         expect(@subscribe_object[:cid]).to be(cid)
       end
     end
@@ -152,11 +150,11 @@ RSpec.describe DataModels do
       end
 
       it 'should return an event, data and cid in unsubscribe object' do
-        expect(@unsubscribe_object.keys.include?(:event)).to be(true)
+        expect(@unsubscribe_object.key?(:event)).to be(true)
         expect(@unsubscribe_object[:event]).to eq('#unsubscribe')
-        expect(@unsubscribe_object.keys.include?(:data)).to be(true)
+        expect(@unsubscribe_object.key?(:data)).to be(true)
         expect(@unsubscribe_object[:data]).to eq(channel)
-        expect(@unsubscribe_object.keys.include?(:cid)).to be(true)
+        expect(@unsubscribe_object.key?(:cid)).to be(true)
         expect(@unsubscribe_object[:cid]).to be(cid)
       end
     end

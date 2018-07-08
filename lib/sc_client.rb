@@ -83,7 +83,7 @@ class ScClient
   #
   #
   #
-  def get_subscribed_channels
+  def subscribed_channels
     @channels
   end
 
@@ -310,7 +310,7 @@ class ScClient
   #
   #
   def publish(channel, data)
-    @ws.send(get_publisher_object(channel, data, increment_cnt).to_json)
+    @ws.send(get_publish_object(channel, data, increment_cnt).to_json)
   end
 
   #
@@ -323,7 +323,7 @@ class ScClient
   # @return [<type>] <description>
   #
   def publishack(channel, data, ack)
-    @ws.send(get_publisher_object(channel, data, increment_cnt).to_json)
+    @ws.send(get_publish_object(channel, data, increment_cnt).to_json)
     @acks[@cnt] = [channel, ack]
   end
 

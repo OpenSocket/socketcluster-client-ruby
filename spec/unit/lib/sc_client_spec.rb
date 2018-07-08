@@ -74,7 +74,7 @@ RSpec.describe Socketclusterclient do
       end
     end
 
-    describe 'get_subscribed_channels' do
+    describe 'subscribed_channels' do
       let(:channels) { %w[channel1 channel2] }
 
       before(:each) do
@@ -83,7 +83,7 @@ RSpec.describe Socketclusterclient do
 
       context 'should provide subscribed channels' do
         it 'should provide list of all subscribed channels' do
-          expect(@socket.get_subscribed_channels).to eq(channels)
+          expect(@socket.subscribed_channels).to eq(channels)
         end
       end
     end

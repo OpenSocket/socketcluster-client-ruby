@@ -1,6 +1,8 @@
 # socketcluster-client-ruby
 A Ruby client for socketcluster.io
 
+In `lib/socketclusterclient`, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file . To experiment with that code, run `bin/console` for an interactive prompt.
+
 Refer below examples for more details.
 
 Overview
@@ -177,7 +179,7 @@ Implementing Pub-Sub via channels
 
 ```ruby
     # Get all subscribed channel
-    channels = socket.get_subscribed_channels
+    channels = socket.subscribed_channels
 ```
 
 #### Publishing an event on channel
