@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email       = %w[shahmaanav07@gmail.com piyushwww13@gmail.com sachinshinde7676@gmail.com]
 
   spec.platform    = Gem::Platform::RUBY
-  spec.licenses    = ['MIT']
+  spec.licenses    = ['OpenSocket']
 
   spec.summary     = 'Ruby client for socketcluster'
   spec.description = 'A socketcluster client designed in ruby'
