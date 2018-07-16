@@ -100,6 +100,20 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
     socket.set_reconnection(false)
 ```
 
+- To set strategy for reconnection to server
+
+```ruby
+    socket.set_reconnection_listener(reconnect_interval, max_reconnect_interval, reconnect_decay, max_attempts)
+```
+
+- For Reconnection to the server
+
+```ruby
+    # This will set automatic-reconnection to socketcluster-server with delay of 2 seconds and repeat it till the maximum attempts are finished
+    socket.reconnect
+```
+
+
 Emitting and listening to events
 --------------------------------
 
