@@ -320,7 +320,7 @@ class ScClient
   # @param [String] data Data to be published on the channel
   # @param [Lambda] ack Block to execute on publish acknowledgment
   #
-  # @return [<type>] <description>
+  #
   #
   def publishack(channel, data, ack)
     @ws.send(get_publish_object(channel, data, increment_cnt).to_json)

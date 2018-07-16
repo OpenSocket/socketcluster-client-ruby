@@ -67,6 +67,6 @@ module Reconnect
   # @return [Boolean] Attempts finished
   #
   def reconnection_attempts_finished
-    @attempts_made == @max_attempts
+    @attempts_made >= @max_attempts
   end
 end
