@@ -103,7 +103,7 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
 - To set strategy for reconnection to server
 
 ```ruby
-    socket.set_reconnection_listener(reconnect_interval, max_reconnect_interval, reconnect_decay, max_attempts)
+    socket.set_reconnection_listener(reconnect_interval, max_reconnect_interval, max_attempts)
 ```
 
 - For Reconnection to the server

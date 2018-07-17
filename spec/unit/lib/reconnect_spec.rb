@@ -14,7 +14,6 @@ RSpec.describe Reconnect do
         initialize_reconnect
         expect(@reconnect_interval).to eq(2000)
         expect(@max_reconnect_interval).to eq(30_000)
-        expect(@reconnect_decay).to eq(1)
         expect(@max_attempts).to eq(nil)
         expect(@attempts_made).to eq(0)
       end
@@ -22,13 +21,12 @@ RSpec.describe Reconnect do
 
     context 'set_reconnection_listener' do
       before(:each) do
-        set_reconnection_listener(3000, 21_000, 1, 10)
+        set_reconnection_listener(3000, 21_000, 10)
       end
 
       it 'should assign values to instance variables related to reconnection strategy' do
         expect(@reconnect_interval).to eq(3000)
         expect(@max_reconnect_interval).to eq(21_000)
-        expect(@reconnect_decay).to eq(1)
         expect(@max_attempts).to eq(10)
       end
     end

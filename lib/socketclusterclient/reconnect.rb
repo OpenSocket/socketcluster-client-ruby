@@ -13,8 +13,7 @@ module Reconnect
   def initialize_reconnect
     @reconnect_interval = 2000
     @max_reconnect_interval = 30_000
-    @reconnect_decay = 1
-    @max_attempts = nil
+    @max_attempts = nil # unlimited reconnection attempt
     @attempts_made = 0
   end
 
@@ -23,15 +22,13 @@ module Reconnect
   #
   # @param [Integer] reconnect_interval A interval for reconnection attempt( in MiliSeconds  )
   # @param [Integer] max_reconnect_interval The Max Limit for reconnection interval (in MiliSeconds)
-  # @param [Integer] reconnect_decay A
   # @param [Integer] max_attempts The Maximum number of Reconnection Attempts Allowed
   #
   #
   #
-  def set_reconnection_listener(reconnect_interval, max_reconnect_interval, reconnect_decay, max_attempts)
+  def set_reconnection_listener(reconnect_interval, max_reconnect_interval, max_attempts)
     @reconnect_interval = reconnect_interval > max_reconnect_interval ? max_reconnect_interval : reconnect_interval
     @max_reconnect_interval = max_reconnect_interval
-    @reconnect_decay = reconnect_decay
     @max_attempts = max_attempts
     @attempts_made = 0
   end
@@ -43,7 +40,6 @@ module Reconnect
   #
   def reconnect
     if @reconnect_interval < @max_reconnect_interval
-      @reconnect_interval *= @reconnect_decay
       @reconnect_interval = @max_reconnect_interval if @reconnect_interval > @max_reconnect_interval
     end
 
@@ -53,9 +49,10 @@ module Reconnect
       connect
       sleep(@reconnect_interval / 1000)
     end
-
-    @attempts_made = 0
+    set_reconnection(false)
+    @logger.warn('Automatic Reconnection is Disabled')
     @logger.warn('Unable to reconnect: max reconnection attempts reached')
+    @attempts_made = 0
   end
 
   private
@@ -67,6 +64,6 @@ module Reconnect
   # @return [Boolean] Attempts finished
   #
   def reconnection_attempts_finished
-    @attempts_made >= @max_attempts
+    @max_attempts.nil? ?  false : @attempts_made >= @max_attempts
   end
 end
