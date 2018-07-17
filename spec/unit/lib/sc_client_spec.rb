@@ -163,8 +163,6 @@ RSpec.describe Socketclusterclient do
     describe 'connect' do
       before(:each) do
         on_set_authentication = lambda do |socket, token|
-          puts "Token received #{token}"
-          socket.set_auth_token(token)
         end
 
         on_authentication = lambda do |socket, is_authenticated|
@@ -377,6 +375,26 @@ RSpec.describe Socketclusterclient do
         it 'should add a key as counter of socket instance with array as value' do
           expect(@socket.instance_variable_get(:@acks)[@socket.instance_variable_get(:@cnt)-1]).to eq(['channel1', @ack_publish])
         end
+      end
+    end
+
+    describe 'get_logger' do
+      before(:each) do
+      @logger = @socket.get_logger
+      end
+
+      it 'returns a logger object' do
+        expect(@logger.class).to eq(Logger)
+      end
+    end
+
+    describe 'disable_logging' do
+      before(:each) do
+        @socket.disable_logging
+      end
+
+      it 'sets logger object to nil' do
+        expect(@socket.instance_variable_get(:@logger)).to eq(nil)
       end
     end
 

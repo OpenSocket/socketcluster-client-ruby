@@ -17,7 +17,7 @@ class ScClient
   include DataModels
   include Reconnect
 
-  attr_accessor :reconnect_interval, :max_reconnect_interval, :reconnect_decay, :max_attempts, :attempts_made
+  attr_accessor :reconnect_interval, :max_reconnect_interval, :max_attempts, :attempts_made
 
   #
   # Initializes instance variables in socketcluster client
@@ -34,8 +34,7 @@ class ScClient
     @delay = 3
     initialize_emitter
     initialize_reconnect
-    @logger = Logger.new(STDOUT)
-    @logger.level = Logger::WARN
+    initialize_logger
   end
 
   #
@@ -221,6 +220,7 @@ class ScClient
   def disconnect
     @enable_reconnection = false
     @ws.close
+    @logger.warn('Automatic Reconnection is Disabled')
   end
 
   #
@@ -325,6 +325,36 @@ class ScClient
   def publishack(channel, data, ack)
     @ws.send(get_publish_object(channel, data, increment_cnt).to_json)
     @acks[@cnt] = [channel, ack]
+  end
+
+  # initializes logger instance and sets logger level
+  #
+  #
+  #
+  #
+  def initialize_logger
+    @logger = Logger.new(STDOUT)
+    @logger.level = Logger::WARN
+  end
+
+  #
+  # Returns Logger object
+  #
+  #
+  # @return [Object] A logger Object
+  #
+  def get_logger
+    initialize_logger unless @logger
+    return @logger
+  end
+
+  # Disables loging of messages
+  #
+  #
+  #
+  #
+  def disable_logging
+    @logger = nil
   end
 
   private
