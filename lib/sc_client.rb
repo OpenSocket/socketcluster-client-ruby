@@ -6,6 +6,7 @@ require_relative './socketclusterclient/emitter'
 require_relative './socketclusterclient/parser'
 require_relative './socketclusterclient/data_models'
 require_relative './socketclusterclient/reconnect'
+require_relative './socketclusterclient/log'
 
 #
 # Class ScClient provides an interface to connect to the socketcluster server
@@ -16,8 +17,9 @@ class ScClient
   include Emitter
   include DataModels
   include Reconnect
+  include Log
 
-  attr_accessor :reconnect_interval, :max_reconnect_interval, :reconnect_decay, :max_attempts, :attempts_made
+  attr_accessor :reconnect_interval, :max_reconnect_interval, :max_attempts
 
   #
   # Initializes instance variables in socketcluster client
@@ -30,12 +32,11 @@ class ScClient
     @url = url
     @acks = {}
     @channels = []
-    @enable_reconnection = true
+    @enable_reconnection = false
     @delay = 3
     initialize_emitter
     initialize_reconnect
-    @logger = Logger.new(STDOUT)
-    @logger.level = Logger::WARN
+    initialize_logger
   end
 
   #
@@ -112,7 +113,7 @@ class ScClient
   end
 
   #
-  # Connect to the ScServer
+  # Connects to the ScServer
   #
   #
   #
@@ -121,8 +122,16 @@ class ScClient
     EM.epoll
 
     EM.run do
-      trap('TERM') { stop }
-      trap('INT')  { stop }
+      trap('TERM') do
+        @enable_reconnection = false
+        disconnect
+      end
+
+      trap('INT') do
+        @enable_reconnection = false
+        disconnect
+      end
+
       @ws = WebSocket::EventMachine::Client.connect(uri: @url)
 
       @ws.onopen do
@@ -132,6 +141,7 @@ class ScClient
       end
 
       @ws.onmessage do |message, _type|
+        @logger.info("Message received : #{message}") if @logger
         if message == '#1'
           @ws.send('#2')
         else
@@ -176,9 +186,12 @@ class ScClient
       end
 
       @ws.onclose do
-        @on_disconnected.call if @on_disconnected
-        if @enable_reconnection
-          reconnect
+        if should_reconnect
+          @reconnect_interval = @max_reconnect_interval if @reconnect_interval > @max_reconnect_interval
+          sleep(@reconnect_interval / 1000)
+          @attempts_made += 1
+          @logger.info("Attempting to reconnect : #{@attempts_made}") if @logger
+          connect
         else
           stop
         end
@@ -219,6 +232,7 @@ class ScClient
   #
   #
   def disconnect
+    @on_disconnected.call if @on_disconnected
     @enable_reconnection = false
     @ws.close
   end
@@ -314,13 +328,13 @@ class ScClient
   end
 
   #
-  #  Publish data to the specified channel name
+  # Publish data to the specified channel name
   #
   # @param [String] channel A channel name
   # @param [String] data Data to be published on the channel
   # @param [Lambda] ack Block to execute on publish acknowledgment
   #
-  # @return [<type>] <description>
+  #
   #
   def publishack(channel, data, ack)
     @ws.send(get_publish_object(channel, data, increment_cnt).to_json)

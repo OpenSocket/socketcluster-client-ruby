@@ -1,8 +1,6 @@
-require 'rubygems'
 require 'bundler/setup'
 require 'simplecov'
-
-Bundler.require
+require 'socketclusterclient'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
