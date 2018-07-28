@@ -85,7 +85,14 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
     socket.connect
 ```
 
-- By default reconnection to server is enabled, so to configure delay for connection
+- By default reconnection to server is disabled, so to enable automatic reconnection
+
+```ruby
+    # This will set automatic-reconnection to socketcluster-server repeat it infinitely
+    socket.set_reconnection(true)
+```
+
+- To set delay of reconnecting to server
 
 ```ruby
     # This will set automatic-reconnection to socketcluster-server with delay of 2 seconds and repeat it infinitely
@@ -100,17 +107,34 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
     socket.set_reconnection(false)
 ```
 
-- To set strategy for reconnection to server
+- For reconnection to the server you need to set reconnection strategy
 
 ```ruby
+    # This will set the reconnection strategy
     socket.set_reconnection_listener(reconnect_interval, max_reconnect_interval, max_attempts)
+
+    # default reconnection strategy
+    socket.set_reconnection_listener(2000, 30_000, nil)
 ```
 
-- For Reconnection to the server
+For example,
+```ruby
+    socket.set_reconnection_listener(3000, 30_000, 10)  # (reconnect_inverval, max_reconnect_interval, max_attempts)
+    socket.set_reconnection_listener(3000, 30_000)  # (reconnect_inverval, max_reconnect_interval)
+```
+
+- You can set reconnect_interval, max_reconnect_interval and max_attempts directly as well
+```ruby
+    socket.reconnect_interval = 2000
+    socket.max_reconnect_interval = 20_000
+    socket.max_attempts = 10
+```
+
+- To allow reconnection to server, you need to reconnect
 
 ```ruby
     # This will set automatic-reconnection to socketcluster-server with delay of 2 seconds and repeat it till the maximum attempts are finished
-    socket.reconnect
+    socket.connect
 ```
 
 
@@ -241,6 +265,30 @@ Implementing Pub-Sub via channels
     end
 ```
 
+Logger
+------
+
+#### Disabling logger
+
+- To get logger for logging of events
+
+```ruby
+    socket.logger.info("Some information")
+    socket.logger.warn("Some warning")
+```
+
+- To disable logging of events
+
+```ruby
+    socket.disable_logging
+```
+
+- To enable logging of events
+
+```ruby
+    socket.enable_logging
+```
+
 Development
 -----------
 
@@ -256,4 +304,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/openso
 License
 -------
 
-The gem is available as open source under the terms of the [OpenSocket License]
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

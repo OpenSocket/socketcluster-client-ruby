@@ -31,36 +31,19 @@ RSpec.describe Reconnect do
       end
     end
 
-    context 'reconnect' do
-      before(:each) do
-        initialize_reconnect
-        @socket.max_attempts = 5
-        on_set_authentication = lambda do |socket, token|
-        end
-        on_authentication = lambda do |socket, _is_authenticated|
-          socket.disconnect
-        end
-        @socket.set_authentication_listener(on_set_authentication, on_authentication)
-        @socket.set_reconnection(false)
-        @socket.reconnect
-      end
-
-      it 'sets attempts_made to 0 after completion' do
-        expect(@socket.instance_variable_get(:@attempts_made)).to eq(0)
-      end
-    end
-
-    context 'reconnection_attempts_finished' do
+    context 'should_reconnect' do
       it 'returns true if attempts_made is greater than equal to max_attempts' do
+        @socket.instance_variable_set(:@enable_reconnection , true)
         @socket.instance_variable_set(:@max_attempts , 10)
         @socket.instance_variable_set(:@attempts_made, 10)
-        expect(@socket.send(:reconnection_attempts_finished)).to eq(true)
+        expect(@socket.send(:should_reconnect)).to eq(false)
       end
 
       it 'returns false if attempts_made is less than max_attempts' do
+        @socket.instance_variable_set(:@enable_reconnection , true)
         @socket.instance_variable_set(:@max_attempts , 10)
         @socket.instance_variable_set(:@attempts_made, 9)
-        expect(@socket.send(:reconnection_attempts_finished)).to eq(false)
+        expect(@socket.send(:should_reconnect)).to eq(true)
       end
     end
   end

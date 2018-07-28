@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 RSpec.describe Socketclusterclient do
   include Socketclusterclient
 
@@ -17,7 +16,7 @@ RSpec.describe Socketclusterclient do
           expect(@socket.instance_variable_get(:@cnt)).to eq(0)
           expect(@socket.instance_variable_get(:@acks)).to eq({})
           expect(@socket.instance_variable_get(:@channels)).to eq([])
-          expect(@socket.instance_variable_get(:@enable_reconnection)).to eq(true)
+          expect(@socket.instance_variable_get(:@enable_reconnection)).to eq(false)
           expect(@socket.instance_variable_get(:@delay)).to eq(3)
         end
 
@@ -175,7 +174,6 @@ RSpec.describe Socketclusterclient do
       it 'automatically reconnects to socketcluster server if enable_reconnection is true' do
         @socket.set_reconnection(true)
         @socket.connect
-        expect(@socket).to respond_to(:reconnect)
       end
     end
 
@@ -270,13 +268,13 @@ RSpec.describe Socketclusterclient do
         end
 
         it 'should add a key as counter of socket instance with array as value' do
-          expect(@socket.instance_variable_get(:@acks)[@socket.instance_variable_get(:@cnt)-1]).to eq(['channel1', @ack_channel])
+          expect(@socket.instance_variable_get(:@acks)[@socket.instance_variable_get(:@cnt) - 1]).to eq(['channel1', @ack_channel])
         end
       end
     end
 
     describe 'unsubscribe' do
-      let(:channels) {%w(channel1 channel2)}
+      let(:channels) { %w[channel1 channel2] }
       before(:each) do
         @socket.instance_variable_set(:@channels, channels)
         @socket.set_reconnection(false)
@@ -298,7 +296,7 @@ RSpec.describe Socketclusterclient do
     end
 
     describe 'unsubscribeack' do
-      let(:channels) {%w(channel1 channel2)}
+      let(:channels) { %w[channel1 channel2] }
 
       before(:each) do
         @ack_channel = lambda do |key, error, object|
@@ -321,13 +319,13 @@ RSpec.describe Socketclusterclient do
         end
 
         it 'should add a key as counter of socket instance with array as value' do
-          expect(@socket.instance_variable_get(:@acks)[@socket.instance_variable_get(:@cnt)-1]).to eq(['channel1', @ack_channel])
+          expect(@socket.instance_variable_get(:@acks)[@socket.instance_variable_get(:@cnt) - 1]).to eq(['channel1', @ack_channel])
         end
       end
     end
 
     describe 'publish' do
-      let(:channels) {%w(channel1)}
+      let(:channels) { %w[channel1] }
       before(:each) do
         @socket.instance_variable_set(:@channels, channels)
         @socket.set_reconnection(false)
@@ -350,7 +348,7 @@ RSpec.describe Socketclusterclient do
     end
 
     describe 'publishack' do
-      let(:channels) {%w(channel1)}
+      let(:channels) { %w[channel1] }
       before(:each) do
         @ack_publish = lambda do |key, error, object|
         end
@@ -373,14 +371,14 @@ RSpec.describe Socketclusterclient do
         end
 
         it 'should add a key as counter of socket instance with array as value' do
-          expect(@socket.instance_variable_get(:@acks)[@socket.instance_variable_get(:@cnt)-1]).to eq(['channel1', @ack_publish])
+          expect(@socket.instance_variable_get(:@acks)[@socket.instance_variable_get(:@cnt) - 1]).to eq(['channel1', @ack_publish])
         end
       end
     end
 
-    describe 'get_logger' do
+    describe 'logger' do
       before(:each) do
-      @logger = @socket.get_logger
+        @logger = @socket.logger
       end
 
       it 'returns a logger object' do
