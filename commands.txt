@@ -1,0 +1,47 @@
+To work with ruby you need to install ruby and its dependencies:
+
+	$ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+	$ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+	$ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+	$ sudo apt-get update
+	$ sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev nodejs yarn
+
+Installing ruby using rvm:
+
+	$ sudo apt-get install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+	$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+	$ curl -sSL https://get.rvm.io | bash -s stable
+	$ source ~/.rvm/scripts/rvm
+	$ rvm install 2.2.0
+	$ rvm use 2.2.0 --default
+	$ ruby -v
+
+Now, to use the gem you need to:
+
+	$ gem install socketclusterclient
+
+You can now use the gem directly by requiring it:
+
+	require 'socketclusterclient'
+
+However, if you want to contribute to the gem, you need to have a git account and setup git:
+
+	$ git config --global color.ui true
+	$ git config --global user.name "YOUR NAME"
+	$ git config --global user.email "YOUR@EMAIL.com"
+	$ ssh-keygen -t rsa -b 4096 -C "YOUR@EMAIL.com"
+
+The next step is to take the newly generated SSH key and add it to your Github account. You want to copy and paste the output of the following command and paste it in your github account SSH/GPG Keys:
+
+	$ cat ~/.ssh/id_rsa.pub
+
+Once you've done this, you can check and see if it worked:
+
+	$ ssh -T git@github.com
+
+Once you are ready with the setup, you can clone the repository using:
+
+	$ git clone https://github.com/OpenSocket/socketcluster-client-ruby.git
+
+Now, you need to just install all the dependency and then you are all set to start contributing to https://github.com/OpenSocket/socketcluster-client-ruby.git
