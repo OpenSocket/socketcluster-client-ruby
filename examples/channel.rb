@@ -6,6 +6,14 @@ on_disconnect = -> { puts 'on disconnect got called' }
 
 on_connect_error = -> { puts 'on connect error got called' }
 
+on_connection_timeout = -> {puts 'connection timeout happened'}
+
+on_connection_dropped = -> {puts 'connection dropped from existing sockets'}
+
+on_connection_encrypted = -> {puts 'Connection is encrypted from server, check the encryption key received'}
+
+on_connection_status_changed = -> {put 'Connection status has changed'}
+
 ack_subscribe = lambda do |channel, error, _object|
   puts "Subscribed successfully to channel => #{channel}" if error == ''
 end
@@ -47,3 +55,5 @@ socket = ScClient.new('ws://localhost:8000/socketcluster/')
 socket.set_basic_listener(on_connect, on_disconnect, on_connect_error)
 socket.set_authentication_listener(on_set_authentication, on_authentication)
 socket.connect
+
+
