@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Module Logger provides an interface to log events
 #
@@ -45,26 +47,18 @@ module Log
     initialize_logger
   end
 
-
   #
   # Method to set logging level
-  #
+  # :debug < :info < :warn < :error < :fatal < :unknown
   #
   #
   #
   def set_logging_level(level)
-    # need to set the logging level, create warning if logging level is invalid
+    level = level.to_s.downcase
+    if %w[debug info warn error fatal unknown].include?(level)
+      @logger.level = level.to_sym
+    else
+      @logger.warn('Invalid logger level')
+    end
   end
-
-
-  #
-  # Method Create logging context
-  #
-  #
-  #
-  #
-  def set_logging_context
-    # create logging context, which can carry logging information throughout the thread...
-  end
-
 end
