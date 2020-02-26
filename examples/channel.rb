@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'socketclusterclient'
 
 on_connect = -> { puts 'on connect got called' }
@@ -5,6 +7,14 @@ on_connect = -> { puts 'on connect got called' }
 on_disconnect = -> { puts 'on disconnect got called' }
 
 on_connect_error = -> { puts 'on connect error got called' }
+
+on_connection_timeout = -> { puts 'connection timeout happened' }
+
+on_connection_dropped = -> { puts 'connection dropped from existing sockets' }
+
+on_connection_encrypted = -> { puts 'Connection is encrypted from server, check the encryption key received' }
+
+on_connection_status_changed = -> { puts 'Connection status has changed' }
 
 ack_subscribe = lambda do |channel, error, _object|
   puts "Subscribed successfully to channel => #{channel}" if error == ''
