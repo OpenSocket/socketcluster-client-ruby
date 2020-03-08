@@ -142,8 +142,9 @@ class ScClient
 
       @ws.onmessage do |message, _type|
         @logger.info("Message received : #{message}") if @logger
-        if message == '#1'
-          @ws.send('#2')
+        if message == ''
+          @logger.info("Ping received, sending PONG back")
+          @ws.send('')
         else
           main_object = JSON.parse(message)
           data_object = main_object['data']
